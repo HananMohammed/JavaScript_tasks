@@ -1,17 +1,27 @@
+class Product{
+    title = 'DEFAULT';
+    imageUrl ;
+    description ;
+    price ;
+    constructor(title , image ,desc ,price) {
+        this.title = title ;
+        this.imageUrl = image ;
+        this.price = price ;
+        this.description =desc ;
+    }
+}
  let productList = {
     products: [
-    {
-        title: "hello" ,
-        imageUrl:"https://images.unsplash.com/photo-1518707606293-6274eadcf07d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        Price: 19.9 ,
-        description:"Nature Safary ",
-    },
-    {
-        title: "A Carpet" ,
-        imageUrl:"https://www.wikihow.com/images/thumb/7/77/Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg/aid1424669-v4-728px-Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg",
-        Price: 30.99 ,
-        description:" A very ColorFull Carpet ",
-    }
+    new Product("hello" ,
+        "https://images.unsplash.com/photo-1518707606293-6274eadcf07d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+        19.9 ,
+        "Nature Safary ",
+        ),
+    new Product("A Carpet" ,
+        "https://www.wikihow.com/images/thumb/7/77/Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg/aid1424669-v4-728px-Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg",
+        30.99 ,
+        " A very ColorFull Carpet ",
+         )
     ],
     render() {
         const renderHook =document.getElementById('app');
