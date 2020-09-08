@@ -13,9 +13,13 @@ class ElementAttribute{
     }
 }
 class Component {
-    constructor(renderHook) {
+    constructor(renderHook ,shouldRender =true) {
         this.hookId = renderHook ;
+        if (shouldRender){
+            this.render();
+        }
     }
+    render(){}
     createRootElement(tag , cssClasses , attributes){
         const rootElement = document.createElement(tag) ;
         if(cssClasses){
@@ -68,8 +72,10 @@ class ShoppingCart extends Component{
 }
 class ProductItem extends Component{
     constructor(product ,renderHookId) {
-        super(renderHookId);
+        super(renderHookId ,false);
         this.product = product ;
+        this.render();
+
     }
     addToCart(){
         App.addProductToCart(this.product);
@@ -93,49 +99,57 @@ class ProductItem extends Component{
 
 }
 class ProductList extends Component{
+    products = [] ;
+
     constructor(renderHookId) {
         super(renderHookId);
+        this.fetchProducts();
     }
-    products = [
-        new Product("hello",
-            "https://images.unsplash.com/photo-1518707606293-6274eadcf07d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-            "Nature Safary ",
-            19.9,
+    fetchProducts(){
+        this.products = [
+            new Product("hello",
+                "https://images.unsplash.com/photo-1518707606293-6274eadcf07d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+                "Nature Safary ",
+                19.9,
 
-        ),
+            ),
 
-        new Product("A Carpet",
-            "https://www.wikihow.com/images/thumb/7/77/Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg/aid1424669-v4-728px-Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg",
-            " A very ColorFull Carpet ",
-            30.99,
+            new Product("A Carpet",
+                "https://www.wikihow.com/images/thumb/7/77/Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg/aid1424669-v4-728px-Make-a-Carpet-Into-a-Rug-Step-1-Version-2.jpg",
+                " A very ColorFull Carpet ",
+                30.99,
 
-        ),
-    ];
-
-    render() {
-        const Attribute =[new ElementAttribute('id' ,'prod-list')];
-        const prodList = this.createRootElement('ul','product-list',Attribute);
+            ),
+        ];
+        this.renderProducts();
+    }
+    renderProducts(){
         for (const prod of this.products) {
-            const productItem = new ProductItem(prod ,'prod-list');
-             productItem.render();
+            new ProductItem(prod ,'prod-list');
         }
     }
+    render() {
+        const Attribute =[new ElementAttribute('id' ,'prod-list')];
+        this.createRootElement('ul','product-list',Attribute);
+        if(this.products&&this.products.length>0){
+            this.renderProducts();
+        }
+            }
 }
 
-class Shop {
+class Shop{
+    constructor() {
+        this.render();
+    }
     render(){
         this.cart = new ShoppingCart('app');
-        this.cart.render('app');
-        const productList = new ProductList('app');
-        productList.render();
-
+        new ProductList('app');
     }
 }
 class App{
     static cart ;
     static init(){
         const shop = new Shop() ;
-        shop.render();
         this.cart = shop.cart;
     }
     static addProductToCart(product){
